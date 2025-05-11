@@ -5,11 +5,13 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static ru.thuggeelya.useraccounts.util.ValidationUtils.PHONE_REGEX;
+
 @Data
 @NoArgsConstructor
 public class PhoneCreateRequest {
 
     @NotBlank(message = "Phone is null")
-    @Pattern(regexp = "^((8|(\\+)?7)[\\- ]?)(\\(?\\d{3}\\)?[\\- ]?)[\\d\\- ]{7}$", message = "String is not a valid phone")
+    @Pattern(regexp = PHONE_REGEX, message = "String is not a valid phone")
     private String newPhone;
 }

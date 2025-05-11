@@ -1,5 +1,6 @@
 package ru.thuggeelya.useraccounts.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,6 +35,7 @@ public class PhoneData {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = User.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)

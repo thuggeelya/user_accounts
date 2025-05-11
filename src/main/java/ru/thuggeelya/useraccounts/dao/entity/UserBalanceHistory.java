@@ -4,48 +4,72 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
-@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "email_data")
-public class EmailData {
+@Table(name = "user_balance_history")
+public class UserBalanceHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @Column(name = "user_id", nullable = false)
+    private Long id;
 
+    @MapsId
     @JsonIgnore
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = User.class)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+
+    @OneToOne(optional = false, targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "initial_balance", nullable = false)
+    private BigDecimal initialBalance;
 
-    @Column(nullable = false, unique = true, length = 200)
-    private String email;
+    @Column(name = "current_balance")
+    private BigDecimal currentBalance;
+
+    @Column(name = "max_balance")
+    private BigDecimal maxBalance;
+
+    @NotNull
+    @ColumnDefault("now()")
+    @Column(name = "created", nullable = false)
+    private Timestamp created;
+
+    @Column(name = "last_updated")
+    private Timestamp lastUpdated;
+
+    @NotNull
+    @ColumnDefault("true")
+    @Column(name = "increment", nullable = false)
+    private Boolean increment = false;
+
 
     @Override
     public final boolean equals(final Object o) {
@@ -62,8 +86,8 @@ public class EmailData {
 
         if (thisEffectiveClass != oEffectiveClass) return false;
 
-        final EmailData emailData = (EmailData)o;
-        return getId() != null && Objects.equals(getId(), emailData.getId());
+        final UserBalanceHistory userBalanceHistory = (UserBalanceHistory)o;
+        return getId() != null && Objects.equals(getId(), userBalanceHistory.getId());
     }
 
     @Override

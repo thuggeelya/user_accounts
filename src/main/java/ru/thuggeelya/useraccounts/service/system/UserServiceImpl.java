@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService {
 
         emailDataService.save(email, userId);
 
+        log.info("saving");
+
         final UserDto userDto = getUserDto(userId);
         eventPublisher.publishEvent(new UserCommitedEvent(this, userDto));
 

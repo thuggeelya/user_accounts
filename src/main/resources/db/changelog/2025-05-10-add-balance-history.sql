@@ -50,3 +50,7 @@ CREATE TRIGGER account_delete_trigger
     ON account
     FOR EACH ROW
 EXECUTE FUNCTION delete_user_balance_history();
+
+--changeset thuggeelya:2
+
+ALTER TABLE user_balance_history DROP COLUMN lock;

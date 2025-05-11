@@ -5,6 +5,9 @@ spring:
     job:
       user-balance:
         cron: "*/1 * * * * ?"
+    jwt:
+      secret: =================================ACCOUNTS===============================
+      expirationMs: 1000000000
 
   datasource:
     url: jdbc:postgresql://localhost:5432/user_accounts
