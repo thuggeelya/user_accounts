@@ -28,7 +28,7 @@ import static ru.thuggeelya.useraccounts.model.response.ResponseResult.FAILED;
 @RestControllerAdvice
 public class GlobalExceptionHandlerController {
 
-    public static final String ERROR_MESSAGE = "Ошибка: статус = [{}] : детали = [{}].";
+    private static final String ERROR_MESSAGE = "Ошибка: статус = [{}] : детали = [{}].";
 
     @ResponseBody
     @ExceptionHandler({ClientException.class, DataAccessException.class, ServletException.class})

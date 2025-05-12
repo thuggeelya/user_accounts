@@ -100,25 +100,27 @@ services:
     networks:
       - dns
 
-  server:
-    build:
-      context: ..
-      dockerfile: .ci/Dockerfile
-    container_name: server
-    ports:
-      - 8080:8080
-    depends_on:
-      - postgres
-      - elasticsearch
-    environment:
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/user_accounts
-      SPRING_ELASTICSEARCH_URIS: elasticsearch:9200
-      SPRING_ELASTICSEARCH_USERNAME: elastic
-      SPRING_ELASTICSEARCH_PASSWORD: elastic
-    networks:
-      - dns
+#  server:
+#    build:
+#      context: ..
+#      dockerfile: .ci/Dockerfile
+#    container_name: server
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - postgres
+#      - elasticsearch
+#    environment:
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgres
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/user_accounts
+#      SPRING_ELASTICSEARCH_URIS: elasticsearch:9200
+#      SPRING_ELASTICSEARCH_USERNAME: elastic
+#      SPRING_ELASTICSEARCH_PASSWORD: elastic
+#      SPRING_DATA_REDIS_HOST: redis
+#      SPRING_DATA_REDIS_PORT: 6379
+#    networks:
+#      - dns
 
 volumes:
   pg_data:

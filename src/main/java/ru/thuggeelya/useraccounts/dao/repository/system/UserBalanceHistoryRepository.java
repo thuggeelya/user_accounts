@@ -13,31 +13,34 @@ import ru.thuggeelya.useraccounts.dao.entity.UserBalanceHistory;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static jakarta.persistence.LockModeType.PESSIMISTIC_READ;
+import static jakarta.persistence.LockModeType.PESSIMISTIC_WRITE;
 
 @Repository
 public interface UserBalanceHistoryRepository extends JpaRepository<UserBalanceHistory, Long> {
 
     @Query(
-            """
-                    select h
-                    from UserBalanceHistory h
-                    where (h.lastUpdated is null or h.lastUpdated < current_timestamp - 30000) and h.increment = true
-                    """
+            value = """
+                    select * from user_balance_history
+                    where (last_updated is null or last_updated < now() - interval '30 seconds') and increment is true
+                    for update skip locked
+                    """,
+            nativeQuery = true
     )
-    @Transactional(readOnly = true)
+    @Transactional
     List<UserBalanceHistory> findRelevantBalanceHistories();
 
     @Transactional
-    @Lock(PESSIMISTIC_READ)
+    @Lock(PESSIMISTIC_WRITE)
     @Query("SELECT h FROM UserBalanceHistory h WHERE h.id = :userId")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "3000")})
-    UserBalanceHistory lockHistory(final Long userId);
+    @QueryHints({@QueryHint(name = "jakarta.persistence.lock.timeout", value = "5000")})
+    UserBalanceHistory findHistoryForReadWrite(final Long userId);
 
     @Query(
             """
                     update UserBalanceHistory h
-                    set h.increment = :increment, h.currentBalance = :balance, h.lastUpdated = current_timestamp
+                    set h.increment = :increment,
+                        h.currentBalance = :balance,
+                        h.lastUpdated = current_timestamp
                     where h.id = :userId
                     """
     )

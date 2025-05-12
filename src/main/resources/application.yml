@@ -4,7 +4,7 @@ spring:
     base-prefix: /api/1
     job:
       user-balance:
-        cron: "*/1 * * * * ?"
+        cron: "*/3 * * * * ?"
     jwt:
       secret: =================================ACCOUNTS===============================
       expirationMs: 1000000000
@@ -16,7 +16,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
 
   elasticsearch:
     uris: http://localhost:9200

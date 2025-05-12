@@ -41,7 +41,6 @@ public class UserBalanceHistory {
     @JsonIgnore
     @ToString.Exclude
     @OnDelete(action = OnDeleteAction.CASCADE)
-
     @OneToOne(optional = false, targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User user;
@@ -69,7 +68,6 @@ public class UserBalanceHistory {
     @ColumnDefault("true")
     @Column(name = "increment", nullable = false)
     private Boolean increment = false;
-
 
     @Override
     public final boolean equals(final Object o) {

@@ -40,6 +40,7 @@ public class Account {
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
+    @Column(name = "balance")
     private BigDecimal balance;
 
     @Override

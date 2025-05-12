@@ -12,6 +12,8 @@ import ru.thuggeelya.useraccounts.exception.ClientException;
 import ru.thuggeelya.useraccounts.mapper.UserMapper;
 import ru.thuggeelya.useraccounts.model.dto.UserDto;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -60,6 +62,10 @@ public class UserServiceImpl implements UserService {
 
         log.info("Changing email for user {} from {} to {}", userId, oldEmail, newEmail);
 
+        if (Objects.equals(oldEmail, newEmail)) {
+            throw new ClientException("Emails are equal");
+        }
+
         emailDataService.change(oldEmail, newEmail, userId);
 
         final UserDto userDto = getUserDto(userId);
@@ -74,6 +80,10 @@ public class UserServiceImpl implements UserService {
     public UserDto changePhone(final Long userId, final String oldPhone, final String newPhone) {
 
         log.info("Changing phone for user {} from {} to {}", userId, oldPhone, newPhone);
+
+        if (Objects.equals(oldPhone, newPhone)) {
+            throw new ClientException("Phones are equal");
+        }
 
         phoneDataService.change(oldPhone, newPhone, userId);
 
